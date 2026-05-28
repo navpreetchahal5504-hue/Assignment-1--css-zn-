@@ -143,6 +143,8 @@
     z-index: -1;
     /* Rich- radical + linear graident for background atmosphere */
     background:
+     linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.85)),
+     url("./bg.jpg") center/cover no-repeat,
      radial-gradient(ellipse 80% 60% at 10% 0%, rgba(245, 166, 35, 0.08) 0%, transparent 60%),
      radial-gradient(ellipse 60% 80% at 90% 100%, rgba(245, 166, 35, 0.05) 0%, transparent 55%),
      linear-gradient(160deg, #0a0a0a 0%, #0f0e0c 50%, #0a0a0a 100%);
