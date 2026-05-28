@@ -1,0 +1,626 @@
+/* 
+ * CSS Zen Garden - "NEON BRUTALIST" Theme
+ * COMP1054 - Assignment One
+ * 
+ * Design Concept: Dark editorial brutalism with neon amber accents.
+ * A delibrate tension between raw structure and refined type.
+ *
+ * Fonts:
+ *  - "Bebas Nueu" -> display / headings (Google Fonts) 
+ *  - "DM Serif Display" -> subheadings / pull text (Google Fonts)
+ *  - "IBM Plex Mono" -> body / utility text (Google Fonts) 
+ *
+ * Table of Contents
+ * 1. Google Fonts Import
+ * 2. CSS Custom Properties (Design Tokens)
+ * 3. Reset & Base
+ * 4. Background & Page 
+ * 5. Intro / Header
+ * 6. Main Content Sections
+ * 7. Sidebar
+ * 8. Footer 
+ * 9. Animations & Creative Effects
+ * 10. Responsive Typography
+ */
+
+/* ---------------
+   1. Google Fonts Import
+   Two complementary typefaces:
+   - Bebas Neue - condensed display font, strong & artitectural
+   - DM Serif Display - elegent serif for subheading & body rhythm
+   - IBM Plex Mono - monospace for body text, technical & honest
+------------------------ */
+
+   /* ─────────────────────────────────────────────
+   1. GOOGLE FONTS IMPORT
+   Two complementary typefaces:
+   • Bebas Neue   — condensed display font, strong & architectural
+   • DM Serif Display — elegant serif for subheadings & body rhythm
+   • IBM Plex Mono — monospace for body text, technical & honest
+───────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@300;400;500&display=swap');
+
+
+/* ─────────────────────────────────────────────
+   2. CSS CUSTOM PROPERTIES (Design Tokens)
+   Centralised colour & spacing — reusable across
+   all rules for consistency and easy theming.
+───────────────────────────────────────────── */
+:root {
+  /* Core palette */
+  --clr-bg:          #0a0a0a;       /* near-black background */
+  --clr-surface:     #111111;       /* slightly lifted surface */
+  --clr-border:      #222222;       /* subtle dividers */
+  --clr-accent:      #f5a623;       /* neon amber — primary accent */
+  --clr-accent-dim:  #c47d0e;       /* dimmed amber for hover states */
+  --clr-accent-glow: rgba(245, 166, 35, 0.18); /* glow/shadow tint */
+  --clr-text:        #e8e8e8;       /* primary text — high contrast */
+  --clr-text-muted:  #888888;       /* secondary / metadata text */
+  --clr-heading:     #ffffff;       /* pure white headings */
+
+  /* Typography scale — fluid clamp() values for responsiveness */
+  --fs-xs:   clamp(0.65rem,  1vw,  0.75rem);
+  --fs-sm:   clamp(0.8rem,   1.2vw, 0.9rem);
+  --fs-base: clamp(0.9rem,   1.4vw, 1rem);
+  --fs-md:   clamp(1rem,     1.8vw, 1.2rem);
+  --fs-lg:   clamp(1.4rem,   3vw,   2rem);
+  --fs-xl:   clamp(2.5rem,   6vw,   5rem);
+  --fs-2xl:  clamp(3.5rem,   10vw,  8rem);
+
+  /* Font stacks */
+  --ff-display: 'Bebas Neue', 'Arial Narrow', sans-serif;
+  --ff-serif:   'DM Serif Display', Georgia, serif;
+  --ff-mono:    'IBM Plex Mono', 'Courier New', monospace;
+
+  /* Spacing */
+  --space-xs:  0.5rem;
+  --space-sm:  1rem;
+  --space-md:  2rem;
+  --space-lg:  4rem;
+  --space-xl:  8rem;
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-mid:  0.3s ease;
+}
+
+
+/* ─────────────────────────────────────────────
+   3. RESET & BASE
+   Sensible defaults — box model, line-height,
+   font rendering.
+───────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  /* Base font size allows rem units to scale naturally */
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--clr-bg);
+  color: var(--clr-text);
+  font-family: var(--ff-mono);
+  font-size: var(--fs-base);
+  font-weight: 300;
+  line-height: 1.8;
+  /* Subtle grain texture via SVG data URI — adds tactile depth */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+/* ── Abbreviations ── */
+abbr[title] {
+  text-decoration: underline dotted var(--clr-accent);
+  cursor: help;
+}
+
+
+/* ─────────────────────────────────────────────
+   4. BACKGROUND & PAGE WRAPPER
+   The decorative gradient lives here so it spans
+   the full viewport behind everything.
+───────────────────────────────────────────── */
+.page-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space-md);
+  display: grid;
+  /* Two-column layout: main content + sidebar */
+  grid-template-columns: 1fr 300px;
+  grid-template-rows: auto 1fr;
+  gap: 0 var(--space-lg);
+  position: relative;
+}
+
+/* Full-bleed diagonal gradient behind the page */
+.page-wrapper::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  /* Rich radial + linear gradient for background atmosphere */
+  background:
+    radial-gradient(ellipse 80% 60% at 10% 0%, rgba(245, 166, 35, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 90% 100%, rgba(245, 166, 35, 0.05) 0%, transparent 55%),
+    linear-gradient(160deg, #0a0a0a 0%, #0f0e0c 50%, #0a0a0a 100%);
+  pointer-events: none;
+}
+
+
+/* ─────────────────────────────────────────────
+   5. INTRO / HEADER
+───────────────────────────────────────────── */
+.intro {
+  grid-column: 1 / -1;  /* spans both columns */
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--clr-border);
+  margin-bottom: var(--space-lg);
+}
+
+/* ── Site title ── */
+header[role="banner"] {
+  margin-bottom: var(--space-md);
+  position: relative;
+}
+
+header[role="banner"]::before {
+  /* Decorative amber rule above the title */
+  content: '';
+  display: block;
+  width: 4rem;
+  height: 3px;
+  background: var(--clr-accent);
+  margin-bottom: var(--space-sm);
+  /* Animated entrance — glides in from left */
+  animation: slide-in-bar 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+h1 {
+  font-family: var(--ff-display);
+  font-size: var(--fs-2xl);
+  color: var(--clr-heading);
+  letter-spacing: 0.04em;
+  line-height: 0.9;
+  text-transform: uppercase;
+  /* Text-stroke gives an outlined/editorial feel */
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
+  /* Fade + lift entrance */
+  animation: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+
+h2 {
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-size: var(--fs-lg);
+  color: var(--clr-accent);
+  font-weight: 400;
+  margin-top: var(--space-xs);
+  animation: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
+}
+
+/* ── Section headings (h3) ── */
+h3 {
+  font-family: var(--ff-display);
+  font-size: var(--fs-md);
+  color: var(--clr-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--space-sm);
+  /* Left amber bar pseudo-element on each h3 */
+  padding-left: var(--space-sm);
+  position: relative;
+}
+
+h3::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.1em;
+  bottom: 0.1em;
+  width: 3px;
+  background: var(--clr-accent);
+  border-radius: 2px;
+}
+
+/* ── Summary block ── */
+.summary {
+  font-size: var(--fs-md);
+  font-family: var(--ff-serif);
+  color: var(--clr-text);
+  max-width: 70ch;
+  margin-bottom: var(--space-md);
+  line-height: 1.7;
+  animation: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+}
+
+/* ── Preamble block ── */
+.preamble {
+  max-width: 65ch;
+  animation: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.45s both;
+}
+
+
+/* ─────────────────────────────────────────────
+   6. MAIN CONTENT SECTIONS
+───────────────────────────────────────────── */
+.main.supporting {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+/* Each article section */
+.main.supporting > div[role="article"] {
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid var(--clr-border);
+  max-width: 65ch;
+}
+
+.main.supporting > div[role="article"]:last-of-type {
+  border-bottom: none;
+}
+
+/* Paragraphs */
+p {
+  margin-bottom: var(--space-sm);
+  color: var(--clr-text);
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Links ── */
+a {
+  color: var(--clr-accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+a:hover,
+a:focus {
+  color: var(--clr-heading);
+  border-bottom-color: var(--clr-accent);
+  outline: none;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--clr-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+
+/* ─────────────────────────────────────────────
+   7. SIDEBAR
+───────────────────────────────────────────── */
+.sidebar {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.sidebar .wrapper {
+  /* Sticky sidebar stays in view while scrolling */
+  position: sticky;
+  top: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+/* ── Sidebar section containers ── */
+.design-selection,
+.design-archives,
+.zen-resources {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  padding: var(--space-sm) var(--space-md);
+  /* Subtle amber glow on top edge */
+  border-top: 2px solid var(--clr-accent);
+  transition: box-shadow var(--transition-mid);
+}
+
+.design-selection:hover,
+.design-archives:hover,
+.zen-resources:hover {
+  box-shadow: 0 0 20px var(--clr-accent-glow);
+}
+
+/* ── Sidebar headings ── */
+.sidebar h3 {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.2em;
+  color: var(--clr-text-muted);
+  margin-bottom: var(--space-xs);
+  padding-left: 0;
+  text-transform: uppercase;
+}
+
+/* Remove the left-bar on sidebar h3s — different context */
+.sidebar h3::before {
+  display: none;
+}
+
+/* ── Design selection list ── */
+.design-selection nav ul,
+.design-archives nav ul,
+.zen-resources ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.design-selection nav ul li {
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--clr-border);
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+}
+
+.design-selection nav ul li:last-child {
+  border-bottom: none;
+}
+
+/* Design name link */
+.design-name {
+  display: block;
+  font-family: var(--ff-serif);
+  font-size: var(--fs-sm);
+  color: var(--clr-text);
+  border-bottom: none;
+  transition: color var(--transition-fast), padding-left var(--transition-fast);
+}
+
+.design-name:hover {
+  color: var(--clr-accent);
+  padding-left: 0.4rem;
+  border-bottom: none;
+}
+
+/* Designer name link */
+.designer-name {
+  font-size: var(--fs-xs);
+  color: var(--clr-text-muted);
+  border-bottom: none;
+}
+
+.designer-name:hover {
+  color: var(--clr-accent-dim);
+  border-bottom: none;
+}
+
+/* ── Archives nav ── */
+.design-archives nav ul li,
+.zen-resources ul li {
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--clr-border);
+  font-size: var(--fs-sm);
+}
+
+.design-archives nav ul li:last-child,
+.zen-resources ul li:last-child {
+  border-bottom: none;
+}
+
+.design-archives a,
+.zen-resources a {
+  color: var(--clr-text-muted);
+  border-bottom: none;
+  font-size: var(--fs-sm);
+  transition: color var(--transition-fast);
+}
+
+.design-archives a:hover,
+.zen-resources a:hover {
+  color: var(--clr-accent);
+  border-bottom: none;
+}
+
+/* Archive next-page indicator */
+.indicator {
+  color: var(--clr-accent);
+  font-size: var(--fs-md);
+  line-height: 1;
+  vertical-align: middle;
+}
+
+
+/* ─────────────────────────────────────────────
+   8. FOOTER
+───────────────────────────────────────────── */
+footer {
+  display: flex;
+  gap: var(--space-xs);
+  flex-wrap: wrap;
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--clr-border);
+  margin-top: var(--space-md);
+}
+
+footer a {
+  font-family: var(--ff-mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--clr-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--clr-border);
+  border-bottom: 1px solid var(--clr-border);  /* override base link */
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    background var(--transition-fast);
+}
+
+footer a:hover {
+  color: var(--clr-bg);
+  background: var(--clr-accent);
+  border-color: var(--clr-accent);
+  border-bottom-color: var(--clr-accent);
+}
+
+
+/* ─────────────────────────────────────────────
+   9. ANIMATIONS & CREATIVE EFFECTS
+   Requirement: creative element / hover effect /
+   animation.
+
+   Effects used:
+   a) Entrance animations (fade-up) on headings
+   b) Animated amber bar in header
+   c) Glowing amber underline scan on h3 headings
+   d) Sidebar box-shadow glow on hover
+   e) Pulsing amber glow on the accent bar
+───────────────────────────────────────────── */
+
+/* ── Keyframe: slide in amber bar ── */
+@keyframes slide-in-bar {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 4rem;
+    opacity: 1;
+  }
+}
+
+/* ── Keyframe: fade up entrance ── */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Keyframe: amber pulse on h3 bar ── */
+@keyframes pulse-bar {
+  0%, 100% {
+    box-shadow: 0 0 4px var(--clr-accent);
+  }
+  50% {
+    box-shadow: 0 0 12px var(--clr-accent), 0 0 24px var(--clr-accent-glow);
+  }
+}
+
+/* Apply pulsing glow to h3 accent bars in main content */
+.main.supporting h3::before {
+  animation: pulse-bar 3s ease-in-out infinite;
+}
+
+/* ── Creative hover: section underline scan ── */
+/* Each article section gets an amber scan line on hover */
+.main.supporting > div[role="article"] {
+  position: relative;
+  overflow: hidden;
+  transition: padding-left var(--transition-mid);
+}
+
+.main.supporting > div[role="article"]::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -100%;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--clr-accent), transparent);
+  transition: left 0.6s ease;
+}
+
+.main.supporting > div[role="article"]:hover::after {
+  left: 100%;
+}
+
+/* ── Creative: h1 text shimmer on hover ── */
+h1 {
+  cursor: default;
+  transition: letter-spacing var(--transition-mid);
+}
+
+h1:hover {
+  letter-spacing: 0.08em;
+}
+
+/* ── Extra decorative divs — hidden ── */
+.extra1, .extra2, .extra3,
+.extra4, .extra5, .extra6 {
+  display: none;
+}
+
+
+/* ─────────────────────────────────────────────
+   10. RESPONSIVE TYPOGRAPHY & LAYOUT
+   The fluid clamp() values on --fs-* handle most
+   scaling automatically. These breakpoints handle
+   layout changes.
+───────────────────────────────────────────── */
+
+/* ── Tablet: collapse to single column ── */
+@media (max-width: 900px) {
+  .page-wrapper {
+    grid-template-columns: 1fr;
+    gap: var(--space-md) 0;
+    padding: var(--space-md) var(--space-sm);
+  }
+
+  .intro {
+    grid-column: 1;
+  }
+
+  .main.supporting {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .sidebar {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .sidebar .wrapper {
+    position: static;
+    /* Horizontal layout for sidebar cards on tablet */
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .design-selection,
+  .design-archives,
+  .zen-resources {
+    flex: 1 1 260px;
+  }
+}
+
+/* ── Mobile ── */
+@media (max-width: 560px) {
+  .page-wrapper {
+    padding: var(--space-sm);
+  }
+
+  .sidebar .wrapper {
+    flex-direction: column;
+  }
+
+  footer {
+    gap: 0.4rem;
+  }
+
+  /* Tighten body text on small screens */
+  p {
+    line-height: 1.6;
+  }
+}
