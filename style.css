@@ -99,11 +99,6 @@
 
  body {
     min-height: 100vh;
-
-    background:
-        linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.85)),
-        url("./bg.jpg") center/cover no-repeat fixed;
-
     color: var(--clr-text);
     font-family: var(--ff-mono);
     font-size: var(--fs-base);
