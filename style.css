@@ -97,25 +97,20 @@
     -moz-osx-font-smoothing: grayscale;
  }
 
- body{
-    background-color: var(--clr-bg);
+ body {
+    background: 
+        linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)),
+        url("images/bg.jpg") center/cover no-repeat;
+
+    background-attachment: fixed;
+
     color: var(--clr-text);
     font-family: var(--ff-mono);
     font-size: var(--fs-base);
-    font-weight: 300;
     line-height: 1.8;
- } 
- 
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: url("images/bg.jpg") center/cover no-repeat;
-    opacity: 0.35;
-    z-index: -1;
-    pointer-events: none;
 }
- 
+
+
  /* Abbreviations */
  abbr[title] {
     text-decoration: underline var(--clr-accent);
